@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator";
 
 export class CreateInvoiceDto {
     @IsString()
@@ -13,6 +14,8 @@ export class CreateInvoiceDto {
     @IsNotEmpty()
     reference: string;
 
+    @ValidateNested()
+    @Type(() => InvoiceItemDto)
     items?: [InvoiceItemDto];
     
 }

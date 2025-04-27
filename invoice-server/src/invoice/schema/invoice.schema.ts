@@ -1,7 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
-@Schema()
-export class InvoiceItem {
+export type InvoiceDocument = Invoice & Document;
+
+@Schema({ _id: false })
+export class InvoiceItem extends Document {
     @Prop()
     sku: string;
 
@@ -11,8 +14,8 @@ export class InvoiceItem {
 
 export const InvoiceItemSchema = SchemaFactory.createForClass(InvoiceItem);
 
-@Schema()
-export class Invoice {
+@Schema() // TODO: check {timestamps: true}
+export class Invoice extends Document {
     @Prop({ required: true })
     customer: string;
 
@@ -22,11 +25,11 @@ export class Invoice {
     @Prop({ unique: true, required: true })
     reference: string;
 
-    @Prop({ required: true, default: Date.now() })
+    @Prop({ required: true, default: () => Date.now() })
     date: Date;
 
-    @Prop({ type: [InvoiceItem], default: [] })
-    items?: Array<InvoiceItem>;
+    @Prop({ type: [InvoiceItemSchema], default: [] })
+    items?: InvoiceItem[];
 }
 
 export const InvoiceSchema =  SchemaFactory.createForClass(Invoice);

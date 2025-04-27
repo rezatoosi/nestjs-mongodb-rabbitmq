@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/createInvoice.dto';
 import { InvoiceService } from './invoice.service';
 
@@ -11,9 +11,17 @@ export class InvoiceController {
         return this.invoiceService.createInvoice(createInvoiceDto);
     }
 
+    // @Get()
+    // getInvoiceList() {
+    //     return this.invoiceService.getInvoiceList();
+    // }
+
     @Get()
-    getInvoiceList() {
-        return this.invoiceService.getInvoiceList();
+    getInvoiceListByDate(
+        @Query('startDate') startDate: string,
+        @Query('endDate') endDate: string,
+    ) {
+        return `${startDate} - ${endDate}`;
     }
 
     @Get(':id')

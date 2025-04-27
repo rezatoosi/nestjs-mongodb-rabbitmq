@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     ConfigModule.forRoot({}),
-    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/invoice-system'),
+    MongooseModule.forRoot(process.env.MONGODB_CONNECTOIN_STRING || 'mongodb://localhost:27017/invoice-system'),
     InvoiceModule
   ],
   controllers: [],
