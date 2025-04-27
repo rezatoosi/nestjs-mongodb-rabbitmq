@@ -4,13 +4,15 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WinstonModule } from 'nest-winston';
 import { LoggerMiddleware, Options as LoggerOptions } from './logger/logger.middleware';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({}),
     MongooseModule.forRoot(process.env.MONGODB_CONNECTOIN_STRING || 'mongodb://localhost:27017/invoice-system'),
     WinstonModule.forRoot(LoggerOptions),
-    InvoiceModule
+    InvoiceModule,
+    ReportModule
   ],
   controllers: [],
   providers: [LoggerMiddleware],
