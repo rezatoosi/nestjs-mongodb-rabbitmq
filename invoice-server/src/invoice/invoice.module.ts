@@ -2,13 +2,11 @@ import { Module } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { InvoiceController } from './invoice.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Invoice, InvoiceSchema } from './schema/invoice.schema';
+import AppDb from '../app.db';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Invoice.name, schema: InvoiceSchema },
-    ]),
+    MongooseModule.forFeature(AppDb),
   ],
   providers: [InvoiceService],
   controllers: [InvoiceController]
