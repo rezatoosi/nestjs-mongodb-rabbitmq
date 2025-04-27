@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
 import { ReportService } from "./report.service";
 
 @Controller("report")
@@ -6,11 +6,9 @@ export class ReportController {
     constructor(private readonly reportService: ReportService) {}
 
     @Get()
-    async getReport() {
-        // Call the report service to get the report data
-        const reportData = await this.reportService.generateReport();
-        
-        // Return the report data
+    async getReport(@Query("date") date?: string) {
+        const reportDate = date ? new Date(date) : new Date();
+        const reportData = await this.reportService.generateDailyReport(reportDate);
         return reportData;
     }
 }
