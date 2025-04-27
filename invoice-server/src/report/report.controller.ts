@@ -11,4 +11,11 @@ export class ReportController {
     const reportData = await this.reportService.generateDailyReport(reportDate);
     return reportData;
   }
+
+  @Get('/send')
+  async sendReport() {
+    await this.reportService.sendReport();
+    return { message: 'Report sent successfully' };
+  }
+
 }

@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Model } from 'mongoose';
@@ -8,14 +9,18 @@ import { Invoice } from 'src/invoice/schema/invoice.schema';
 export class ReportService {
   constructor(
     @InjectModel(Invoice.name) private readonly invoiceModel: Model<Invoice>,
+    @Inject("INVOICE_SERVICE") private readonly rabbitClient: ClientProxy,
   ) {}
 
-  @Cron(CronExpression.EVERY_5_SECONDS)
+  // @Cron(CronExpression.EVERY_MINUTE)
+  @Cron("0 12 * * *")
   async sendReport() {
+    const report = this.generateDailyReport();
+    this.rabbitClient.emit('daily_sales_report', report);
     console.log('report sent');
   }
 
-  async generateDailyReport(date: Date) {
+  async generateDailyReport(date?: Date) {
     const reportDate = date || new Date();
     const startDate = new Date(reportDate.setUTCHours(0, 0, 0, 0));
     const endDate = new Date(reportDate.setUTCHours(23, 59, 59, 999));
