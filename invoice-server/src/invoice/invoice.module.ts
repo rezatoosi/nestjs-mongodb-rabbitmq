@@ -5,10 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import AppDb from '../app.db';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature(AppDb),
-  ],
+  imports: [MongooseModule.forFeature(AppDb)],
   providers: [InvoiceService],
-  controllers: [InvoiceController]
+  controllers: [InvoiceController],
 })
 export class InvoiceModule {}

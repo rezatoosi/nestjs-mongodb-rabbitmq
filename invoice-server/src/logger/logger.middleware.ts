@@ -6,7 +6,9 @@ import * as winston from 'winston';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  constructor(@Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger) { }
+  constructor(
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   use(req: Request, res: Response, next: () => void) {
     const start = Date.now();
@@ -16,7 +18,10 @@ export class LoggerMiddleware implements NestMiddleware {
 
     res.on('finish', () => {
       const ms = Date.now() - start;
-      this.logger.log('info', `{ ${ip} ${req.method} ${req.originalUrl} ${userAgent} ${res.statusCode} ${contentLength} } ${ms}ms`);
+      this.logger.log(
+        'info',
+        `{ ${ip} ${req.method} ${req.originalUrl} ${userAgent} ${res.statusCode} ${contentLength} } ${ms}ms`,
+      );
     });
 
     next();

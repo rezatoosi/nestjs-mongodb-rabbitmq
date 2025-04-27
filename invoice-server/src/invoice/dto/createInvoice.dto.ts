@@ -1,31 +1,35 @@
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator";
+import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 export class CreateInvoiceDto {
-    @IsString()
-    @IsNotEmpty()
-    customer: string;
+  @IsString()
+  @IsNotEmpty()
+  customer: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    amount: number;
+  @IsNumber()
+  @IsNotEmpty()
+  amount: number;
 
-    @IsString()
-    @IsNotEmpty()
-    reference: string;
+  @IsString()
+  @IsNotEmpty()
+  reference: string;
 
-    @ValidateNested()
-    @Type(() => InvoiceItemDto)
-    items?: [InvoiceItemDto];
-    
+  @ValidateNested()
+  @Type(() => InvoiceItemDto)
+  items?: [InvoiceItemDto];
 }
 
 export class InvoiceItemDto {
-    @IsString()
-    @IsNotEmpty()
-    sku: string;
+  @IsString()
+  @IsNotEmpty()
+  sku: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    qt: number;
+  @IsNumber()
+  @IsNotEmpty()
+  qt: number;
 }

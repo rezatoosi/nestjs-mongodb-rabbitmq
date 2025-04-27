@@ -7,23 +7,23 @@ import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Controller('invoices')
 export class InvoiceController {
-    constructor(private readonly invoiceService: InvoiceService) {}
+  constructor(private readonly invoiceService: InvoiceService) {}
 
-    @Post()
-    createInvoice(@Body() createInvoiceDto: CreateInvoiceDto) {
-        return this.invoiceService.createInvoice(createInvoiceDto);
-    }
+  @Post()
+  createInvoice(@Body() createInvoiceDto: CreateInvoiceDto) {
+    return this.invoiceService.createInvoice(createInvoiceDto);
+  }
 
-    @Get()
-    getInvoiceListByDate(@Query() query: InvoiceListQuery) {
-        return this.invoiceService.getInvoiceList(query);
-    }
+  @Get()
+  getInvoiceListByDate(@Query() query: InvoiceListQuery) {
+    return this.invoiceService.getInvoiceList(query);
+  }
 
-    @Get(':id')
-    getInvoiceById(@Param('id') id: string) {
-        if (!(Types.ObjectId.isValid(id))) {
-            throw new HttpErrorByCode[400]('Invalid ID format');
-        }
-        return this.invoiceService.getInvoiceById(id);
+  @Get(':id')
+  getInvoiceById(@Param('id') id: string) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new HttpErrorByCode[400]('Invalid ID format');
     }
+    return this.invoiceService.getInvoiceById(id);
+  }
 }

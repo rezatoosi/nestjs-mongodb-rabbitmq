@@ -1,35 +1,35 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 export type InvoiceDocument = Invoice & Document;
 
 @Schema({ _id: false })
 export class InvoiceItem extends Document {
-    @Prop()
-    sku: string;
+  @Prop()
+  sku: string;
 
-    @Prop()
-    qt: number;
+  @Prop()
+  qt: number;
 }
 
 export const InvoiceItemSchema = SchemaFactory.createForClass(InvoiceItem);
 
 @Schema() // TODO: check {timestamps: true}
 export class Invoice extends Document {
-    @Prop({ required: true })
-    customer: string;
+  @Prop({ required: true })
+  customer: string;
 
-    @Prop({ required: true })
-    amount: number;
+  @Prop({ required: true })
+  amount: number;
 
-    @Prop({ unique: true, required: true })
-    reference: string;
+  @Prop({ unique: true, required: true })
+  reference: string;
 
-    @Prop({ required: true, default: () => Date.now() })
-    date: Date;
+  @Prop({ required: true, default: () => Date.now() })
+  date: Date;
 
-    @Prop({ type: [InvoiceItemSchema], default: [] })
-    items?: InvoiceItem[];
+  @Prop({ type: [InvoiceItemSchema], default: [] })
+  items?: InvoiceItem[];
 }
 
-export const InvoiceSchema =  SchemaFactory.createForClass(Invoice);
+export const InvoiceSchema = SchemaFactory.createForClass(Invoice);
