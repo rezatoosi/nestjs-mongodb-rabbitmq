@@ -1,12 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { EventPattern, Payload } from '@nestjs/microservices';
+import { ReportDto } from './dto/report.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @EventPattern("report_generated")
+  sendReportEmail(@Payload() data: ReportDto) {
+    return this.appService.sendReportEmail(data);
   }
 }
