@@ -15,8 +15,7 @@ export class ReportService {
     @Inject("INVOICE_SERVICE") private readonly rabbitClient: ClientProxy,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
-  // @Cron("0 12 * * *")
+  @Cron("0 12 * * *")
   async sendReport() {
     const report = await this.generateDailyReport();
     await firstValueFrom(
