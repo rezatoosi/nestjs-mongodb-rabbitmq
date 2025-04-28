@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type InvoiceDocument = Invoice & Document;
 
 @Schema({ _id: false })
-export class InvoiceItem extends Document {
+export class InvoiceItem {
   @Prop()
   sku: string;
 
@@ -15,7 +15,7 @@ export class InvoiceItem extends Document {
 export const InvoiceItemSchema = SchemaFactory.createForClass(InvoiceItem);
 
 @Schema() // TODO: check {timestamps: true}
-export class Invoice extends Document {
+export class Invoice {
   @Prop({ required: true })
   customer: string;
 
