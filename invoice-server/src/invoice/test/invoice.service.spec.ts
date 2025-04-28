@@ -4,49 +4,11 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Invoice } from '../schema/invoice.schema';
 import { Model } from 'mongoose';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { invoiceStub, newInvoiceStub } from './stubs/invoice.stub';
 
 describe('InvoiceService', () => {
   let service: InvoiceService;
   let model: Model<Invoice>;
-
-  const newInvoice = {
-    customer: "John",
-    amount: 50,
-    reference: "INV123",
-    items: [
-      { sku: "333", qt: 1 }
-    ]
-  }
-
-  const mockInvoice = {
-    customer: "John",
-    amount: 50,
-    reference: "INV123",
-    items: [
-      {
-        sku: "333",
-        qt: 1
-      }
-    ],
-    _id: "680ea2199b534b9e471b4ee4",
-    date: "2025-04-27T21:31:05.327Z",
-    __v: 0
-  };
-
-  const mockInvoice2 = {
-    customer: "Michel",
-    amount: 100,
-    reference: "INV456",
-    items: [
-      {
-        sku: "444",
-        qt: 1
-      }
-    ],
-    _id: "680ea2199b534b9e471b4ee4",
-    date: "2025-04-27T21:31:05.327Z",
-    __v: 0
-  };
 
   const mockInvoiceService = {
     findOne: jest.fn(),
@@ -81,33 +43,34 @@ describe('InvoiceService', () => {
   describe('(100) createInvoice', () => {
 
     it('(101) should throw an error if reference code existed', async () => {
-      jest.spyOn(model, "findOne").mockResolvedValueOnce(newInvoice);
+      jest.spyOn(model, "findOne").mockResolvedValueOnce(newInvoiceStub());
 
-      await expect(service.createInvoice(newInvoice)).rejects.toThrow(
+      await expect(service.createInvoice(newInvoiceStub())).rejects.toThrow(
         new BadRequestException('Invoice with this reference already exists')
       );
 
-      expect(model.findOne).toHaveBeenCalledWith({ reference: newInvoice.reference });
+      expect(model.findOne).toHaveBeenCalledWith({ reference: newInvoiceStub().reference });
     });
 
     it('(102) should create and return an invoice', async () => {
       jest.spyOn(model, "findOne").mockResolvedValueOnce(null);
-      model.create = jest.fn().mockResolvedValueOnce(mockInvoice);
+      model.create = jest.fn().mockResolvedValueOnce(invoiceStub());
 
-      const result = await service.createInvoice(newInvoice);
-      expect(result).toEqual(mockInvoice);
-      expect(model.findOne).toHaveBeenCalledWith({ reference: 'INV123' });
-      expect(model.create).toHaveBeenCalledWith(newInvoice);
+      const result = await service.createInvoice(newInvoiceStub());
+
+      expect(result).toEqual(invoiceStub());
+      expect(model.findOne).toHaveBeenCalledWith({ reference: newInvoiceStub().reference });
+      expect(model.create).toHaveBeenCalledWith(newInvoiceStub());
     });
   });
 
   describe('(200) getInvoiceList', () => {
     
     it('(201) should return an invoice list', async () => {
-      jest.spyOn(model, 'find').mockResolvedValueOnce([mockInvoice, mockInvoice2]);
+      jest.spyOn(model, "find").mockResolvedValueOnce([invoiceStub()]);
 
       const result = await service.getInvoiceList({ startDate: '2025-04-27', endDate: '2025-04-28' });
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(1);
       expect(model.find).toHaveBeenCalled();
     });
 
@@ -140,12 +103,12 @@ describe('InvoiceService', () => {
   describe('(300) getInvoiceById', () => {
 
     it('(301) should return an invoice', async () => {
-      jest.spyOn(model, "findById").mockResolvedValueOnce(mockInvoice);
+      jest.spyOn(model, "findById").mockResolvedValueOnce(invoiceStub());
 
-      const result = await service.getInvoiceById(mockInvoice._id);
+      const result = await service.getInvoiceById(invoiceStub()._id);
 
-      expect(result).toEqual(mockInvoice);
-      expect(model.findById).toHaveBeenCalledWith(mockInvoice._id);
+      expect(result).toEqual(invoiceStub());
+      expect(model.findById).toHaveBeenCalledWith(invoiceStub()._id);
     });
     
     it('(302) should return an Exception when invoice not exists', async () => {
