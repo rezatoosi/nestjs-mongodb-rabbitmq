@@ -12,18 +12,20 @@ import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 export class ReportService {
   constructor(
     @InjectModel(Invoice.name) private readonly invoiceModel: Model<Invoice>,
-    @Inject("INVOICE_SERVICE") private readonly rabbitClient: ClientProxy,
+    @Inject('INVOICE_SERVICE') private readonly rabbitClient: ClientProxy,
   ) {}
 
-  @Cron("0 12 * * *")
+  @Cron('0 12 * * *')
   async sendReport() {
     const report = await this.generateDailyReport();
     await firstValueFrom(
       this.rabbitClient.emit('report_generated', report).pipe(
         catchError((exception: Error) => {
-          return throwError(() => new HttpErrorByCode[500]('something went wrong'));
-        })
-      )
+          return throwError(
+            () => new HttpErrorByCode[500]('something went wrong'),
+          );
+        }),
+      ),
     );
     console.log('report sent');
   }

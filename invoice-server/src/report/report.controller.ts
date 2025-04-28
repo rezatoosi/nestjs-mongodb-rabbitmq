@@ -17,5 +17,4 @@ export class ReportController {
     await this.reportService.sendReport();
     return { message: 'Report sent successfully' };
   }
-
 }

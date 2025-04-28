@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Invoice } from './schema/invoice.schema';
@@ -10,7 +14,7 @@ import { getEndOfDay, getStartOfDay, isValidDate } from 'src/common/dateTime';
 export class InvoiceService {
   constructor(
     @InjectModel(Invoice.name) private readonly invoiceModel: Model<Invoice>,
-  ) { }
+  ) {}
 
   async createInvoice(createInvoiceDto: CreateInvoiceDto): Promise<Invoice> {
     const { reference } = createInvoiceDto;
@@ -27,20 +31,24 @@ export class InvoiceService {
     const { startDate, endDate } = query;
     const filter: {
       date?: {
-        $gte?: string | Date,
-        $lte?: string | Date,
-      },
+        $gte?: string | Date;
+        $lte?: string | Date;
+      };
     } = {};
 
     if (startDate) {
       if (!isValidDate(startDate)) {
-        throw new BadRequestException('Invalid start date. Date should be in this format \'YYYY-MM-DD\'');
+        throw new BadRequestException(
+          "Invalid start date. Date should be in this format 'YYYY-MM-DD'",
+        );
       }
       filter['date'] = { $gte: getStartOfDay(startDate) };
     }
     if (endDate) {
       if (!isValidDate(endDate)) {
-        throw new BadRequestException('Invalid end date. Date should be in this format \'YYYY-MM-DD\'')
+        throw new BadRequestException(
+          "Invalid end date. Date should be in this format 'YYYY-MM-DD'",
+        );
       }
       filter['date'] = { ...filter['date'], $lte: getEndOfDay(endDate) };
     }
@@ -51,7 +59,9 @@ export class InvoiceService {
       filter?.date?.$lte &&
       filter.date.$gte > filter.date.$lte
     ) {
-      throw new BadRequestException('End date should be greater than start date');
+      throw new BadRequestException(
+        'End date should be greater than start date',
+      );
     }
 
     return this.invoiceModel.find(filter);
