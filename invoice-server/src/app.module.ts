@@ -1,21 +1,20 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { InvoiceModule } from './invoice/invoice.module';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { WinstonModule } from 'nest-winston';
 import {
   LoggerMiddleware,
   Options as LoggerOptions,
 } from './logger/logger.middleware';
 import { ReportModule } from './report/report.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({}),
-    MongooseModule.forRoot(
-      process.env.MONGODB_CONNECTOIN_STRING ||
-        'mongodb://localhost:27017/invoice-system',
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    DatabaseModule,
     WinstonModule.forRoot(LoggerOptions),
     InvoiceModule,
     ReportModule,

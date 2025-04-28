@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { InvoiceController } from '../invoice.controller';
-import { InvoiceService } from '../invoice.service';
-import { invoiceStub, newInvoiceStub } from './stubs/invoice.stub';
-import { Invoice } from '../schema/invoice.schema';
-import { InvoiceListQueryDto } from '../dto/invoiceListQuery.dto';
+import { InvoiceController } from '../../invoice.controller';
+import { InvoiceService } from '../../invoice.service';
+import { invoiceStub, newInvoiceStub } from '../stubs/invoice.stub';
+import { Invoice } from '../../schema/invoice.schema';
+import { InvoiceListQueryDto } from '../../dto/invoiceListQuery.dto';
 
 describe('InvoiceController', () => {
   let controller: InvoiceController;

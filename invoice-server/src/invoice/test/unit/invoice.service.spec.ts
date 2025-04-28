@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { InvoiceService } from '../invoice.service';
+import { InvoiceService } from '../../invoice.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Invoice } from '../schema/invoice.schema';
+import { Invoice } from '../../schema/invoice.schema';
 import { Model } from 'mongoose';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { invoiceStub, newInvoiceStub } from './stubs/invoice.stub';
+import { invoiceStub, newInvoiceStub } from '.././stubs/invoice.stub';
 
 describe('InvoiceService', () => {
   let service: InvoiceService;
