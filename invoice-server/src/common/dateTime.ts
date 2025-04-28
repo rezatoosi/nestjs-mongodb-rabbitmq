@@ -15,5 +15,5 @@ export const getStartOfDay = (date: string): Date => {
 };
 
 export const isValidDate = (date: string, format: string = "YYYY-MM-DD"): boolean => {
-  return moment(date, format, true).isValid();
+  return moment(date, format, false).isValid();
 }
