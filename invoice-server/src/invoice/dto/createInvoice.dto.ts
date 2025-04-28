@@ -21,7 +21,7 @@ export class CreateInvoiceDto {
 
   @ValidateNested()
   @Type(() => InvoiceItemDto)
-  items?: [InvoiceItemDto];
+  items?: InvoiceItemDto[];
 }
 
 export class InvoiceItemDto {

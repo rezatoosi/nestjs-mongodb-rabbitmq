@@ -1,11 +1,4 @@
-import { IsDateString, IsOptional } from 'class-validator';
-
-export class InvoiceListQuery {
-  @IsDateString()
-  @IsOptional()
+export interface InvoiceListQueryDto {
   startDate?: string;
-
-  @IsDateString()
-  @IsOptional()
-  endDate: string;
+  endDate?: string;
 }

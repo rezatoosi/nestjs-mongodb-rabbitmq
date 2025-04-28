@@ -1,3 +1,5 @@
+import * as moment from "moment";
+
 export const getEndOfDay = (date: string): Date => {
   const endOfDay = new Date(date);
   endOfDay.setUTCHours(23, 59, 59, 999);
@@ -11,3 +13,7 @@ export const getStartOfDay = (date: string): Date => {
 
   return startOfDay;
 };
+
+export const isValidDate = (date: string, format: string = "YYYY-MM-DD"): boolean => {
+  return moment(date, format, true).isValid();
+}

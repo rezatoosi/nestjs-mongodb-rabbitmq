@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/createInvoice.dto';
 import { InvoiceService } from './invoice.service';
-import { InvoiceListQuery } from './dto/invoiceListQuery.dto';
+import { InvoiceListQueryDto } from './dto/invoiceListQuery.dto';
 import { Types } from 'mongoose';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
@@ -15,7 +15,7 @@ export class InvoiceController {
   }
 
   @Get()
-  getInvoiceListByDate(@Query() query: InvoiceListQuery) {
+  getInvoiceListByDate(@Query() query: InvoiceListQueryDto) {
     return this.invoiceService.getInvoiceList(query);
   }
 
