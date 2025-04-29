@@ -84,9 +84,10 @@ export class ReportService {
     ];
 
     const reportData = await this.invoiceModel.aggregate(stage);
+    console.log(reportData)
 
-    const totalSales = reportData[0].totalSales[0].totalSales;
-    const itemsSold = reportData[0].itemsSold;
+    const totalSales = reportData[0].totalSales[0] ? reportData[0].totalSales[0].totalSales : 0;
+    const itemsSold = reportData[0]?.itemsSold;
 
     const report: ReportDto = {
       generatedAt: new Date(),

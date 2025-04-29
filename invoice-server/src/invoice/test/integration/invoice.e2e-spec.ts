@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { Connection } from 'mongoose';
 import * as request from 'supertest';
 import { AppModule } from 'src/app.module';
@@ -16,7 +16,8 @@ describe('InvoiceController', () => {
   let httpServer: any;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
+    process.env.IGNORE_LOG = '1';
+    const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
@@ -27,11 +28,11 @@ describe('InvoiceController', () => {
   });
 
   afterAll(async () => {
-    await dbConnection.close();
     await app.close();
   });
 
   beforeEach(async () => {
+    
     await dbConnection.collection('invoices').deleteMany({});
   });
 

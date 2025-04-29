@@ -8,7 +8,7 @@ import * as winston from 'winston';
 export class LoggerMiddleware implements NestMiddleware {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-  ) {}
+  ) { }
 
   use(req: Request, res: Response, next: () => void) {
     const start = Date.now();
@@ -34,7 +34,8 @@ const errorFilter = winston.format((info, opts) => {
 });
 
 export const Options: LoggerOptions = {
-  level: process.env.LOG_LEVEL || 'info',
+  // level: process.env.LOG_LEVEL || 'info', //process.env.NODE_ENV === 'test' ? 'silent' : 'info',
+  level: process.env.IGNORE_LOG == '1' ? 'silent' : 'info',
   transports: [
     new winston.transports.Console({}),
     new winston.transports.File({
@@ -45,6 +46,6 @@ export const Options: LoggerOptions = {
         winston.format.json(),
         // errorFilter(),
       ),
-    }),
+    })
   ],
 };

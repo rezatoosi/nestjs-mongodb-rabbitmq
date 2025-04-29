@@ -8,8 +8,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    ScheduleModule.forRoot(),
     MongooseModule.forFeature(appDb),
+    ScheduleModule.forRoot(),
     ClientsModule.register([
       {
         name: 'INVOICE_SERVICE',
