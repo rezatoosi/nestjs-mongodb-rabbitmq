@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ReportDto } from './dto/report.dto';
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
-import { SentMessageInfo } from 'nodemailer';
 
 @Injectable()
 export class AppService {
@@ -11,7 +10,6 @@ export class AppService {
     return format == 'D' ? 
     new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'}) : 
     new Date(date).toLocaleString('en-US', {timeZone: 'UTC'});
-
   }
 
   async sendReportEmail(data: ReportDto) {
@@ -26,8 +24,8 @@ export class AppService {
     `;
 
     const mailOptions: ISendMailOptions = {
-      from: "report@reportserver.local",
-      to: "manager@company.local",
+      from: "report@reportserver.local", //TODO: get from .env
+      to: "manager@company.local", //TODO: get from .env
       subject: `Daily Sales Summary Report (${data.date})`,
       text: mailText,
     }
