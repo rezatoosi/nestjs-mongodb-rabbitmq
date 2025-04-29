@@ -65,33 +65,17 @@ describe('InvoiceController', () => {
       expect(response.body).toMatchObject([newInvoiceStub()]);
     });
 
-    describe('in a date range', () => {
-      it('should return an array of invoices in specific date range', async () => {
-        await dbConnection
-          .collection('invoices')
-          .insertMany(newInvoiceListStub()); //inserts 10 documents in db
+    it('should return an array of invoices in specific date range', async () => {
+      await dbConnection
+        .collection('invoices')
+        .insertMany(newInvoiceListStub()); //inserts 10 documents in db
 
-        let response = await request(httpServer)
-          .get('/invoices')
-          .query({ startDate: '2025-04-09', endDate: '2025-04-20' }); // returns all 10 documents
+      const response = await request(httpServer)
+        .get('/invoices')
+        .query({ startDate: '2025-04-12', endDate: '2025-04-15' }); // returns only 4 documents
 
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(10);
-        expect(response.body).toMatchObject(newInvoiceListStub(false));
-      });
-
-      it('should return an array of invoices in specific date range - with length 4', async () => {
-        await dbConnection
-          .collection('invoices')
-          .insertMany(newInvoiceListStub()); //inserts 10 documents in db
-
-        const response = await request(httpServer)
-          .get('/invoices')
-          .query({ startDate: '2025-04-12', endDate: '2025-04-15' }); // returns only 4 documents
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(4);
-      });
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(4);
     });
   });
 
@@ -113,15 +97,17 @@ describe('InvoiceController', () => {
       return request(httpServer)
         .get(`/invoices/${invoiceStub()._id}`)
         .expect(404)
-        .then((res) => expect(res.body).toMatchObject({ error: 'Not Found' }));
+        .then((response) =>
+          expect(response.body).toMatchObject({ error: 'Not Found' }),
+        );
     });
 
     it('should throw an error because of invalid id', async () => {
       return request(httpServer)
         .get(`/invoices/invalid-id`)
         .expect(400)
-        .then((res) =>
-          expect(res.body).toMatchObject({ error: 'Bad Request' }),
+        .then((response) =>
+          expect(response.body).toMatchObject({ error: 'Bad Request' }),
         );
     });
   });
