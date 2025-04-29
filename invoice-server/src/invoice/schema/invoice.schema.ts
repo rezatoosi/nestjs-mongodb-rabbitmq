@@ -25,8 +25,8 @@ export class Invoice {
   @Prop({ unique: true, required: true })
   reference: string;
 
-  @Prop({ required: true, default: () => Date.now() })
-  date: Date;
+  @Prop({ default: () => Date.now() })
+  date?: Date;
 
   @Prop({ type: [InvoiceItemSchema], default: [] })
   items?: InvoiceItem[];

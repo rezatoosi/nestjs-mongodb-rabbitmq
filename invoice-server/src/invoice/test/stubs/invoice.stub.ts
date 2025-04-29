@@ -17,7 +17,21 @@ export const newInvoiceStub = (): Invoice => {
     customer: invoiceStub().customer,
     amount: invoiceStub().amount,
     reference: invoiceStub().reference,
-    date: invoiceStub().date,
     items: invoiceStub().items,
   };
+};
+
+export const newInvoiceListStub = (setDate: boolean = true) => {
+  const { reference, ...sampleInvoice } = newInvoiceStub();
+  let invoiceList: Invoice[] = [];
+
+  for (let i = 10; i < 20; i++) {
+    let obj = { reference: i.toString(), ...sampleInvoice };
+    if (setDate) {
+      obj.date = new Date(`2025-04-${i}`);
+    }
+    invoiceList.push(obj);
+  }
+
+  return invoiceList;
 };
