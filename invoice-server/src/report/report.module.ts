@@ -5,23 +5,28 @@ import { MongooseModule } from '@nestjs/mongoose';
 import appDb from 'src/app.db';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     MongooseModule.forFeature(appDb),
     ScheduleModule.forRoot(),
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'INVOICE_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: 'daily_sales_report',
-        },
+        useFactory: (configService: ConfigService) => ({
+          name: 'rabbit',
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RABBITMQ_SERVER_URL', '')],
+            queue: configService.get<string>('RABBITMQ_QUEUE_NAME'),
+          },
+        }),
+        inject: [ConfigService],
       },
     ]),
   ],
   controllers: [ReportController],
   providers: [ReportService],
 })
-export class ReportModule {}
+export class ReportModule { }
