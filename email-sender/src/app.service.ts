@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ReportDto } from './dto/report.dto';
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly mailService: MailerService) {}
+  constructor(
+    private readonly mailService: MailerService,
+    private readonly configService: ConfigService,
+  ) {}
 
   private _convertDate(date: Date, format: 'D' | 'DT') {
     return format == 'D'
@@ -24,12 +28,24 @@ export class AppService {
     `;
 
     const mailOptions: ISendMailOptions = {
-      from: 'report@reportserver.local', //TODO: get from .env
-      to: 'manager@company.local', //TODO: get from .env
+      from: this.configService.get<string>('REPORT_EMAIL_FROM'),
+      to: this.configService.get<string>('REPORT_EMAIL_TO'),
       subject: `Daily Sales Summary Report (${data.date})`,
       text: mailText,
     };
+
+    if (!mailOptions.from || !mailOptions.to) {
+      throw new Error(
+        "Please set 'REPORT_EMAIL_FROM' and 'REPORT_EMAIL_TO' variables in .env file",
+      );
+    }
+
     const sentMail = await this.mailService.sendMail(mailOptions);
+
+    if (!String(sentMail.response).includes('250 Ok')) {
+      throw new Error('Email not sending, something is wrong');
+    }
+
     return sentMail;
   }
 }
