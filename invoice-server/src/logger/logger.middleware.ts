@@ -35,7 +35,7 @@ const errorFilter = winston.format((info, opts) => {
 
 export const Options: LoggerOptions = {
   // level: process.env.LOG_LEVEL || 'info', //process.env.NODE_ENV === 'test' ? 'silent' : 'info',
-  level: process.env.IGNORE_LOG == '1' ? 'silent' : 'info',
+  level: process.env.NODE_ENV == 'test' ? 'silent' : 'info',
   transports: [
     new winston.transports.Console({}),
     new winston.transports.File({
