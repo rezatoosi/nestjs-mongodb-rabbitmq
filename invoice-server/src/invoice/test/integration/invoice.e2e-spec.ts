@@ -32,7 +32,6 @@ describe('InvoiceController', () => {
   });
 
   beforeEach(async () => {
-    
     await dbConnection.collection('invoices').deleteMany({});
   });
 
