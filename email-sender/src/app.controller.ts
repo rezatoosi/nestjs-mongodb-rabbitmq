@@ -7,7 +7,7 @@ import { ReportDto } from './dto/report.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @EventPattern("report_generated")
+  @EventPattern('report_generated')
   sendReportEmail(@Payload() data: ReportDto) {
     return this.appService.sendReportEmail(data);
   }

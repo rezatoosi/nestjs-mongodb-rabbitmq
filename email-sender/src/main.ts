@@ -8,7 +8,7 @@ async function bootstrap() {
     {
       transport: Transport.RMQ,
       options: {
-        urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
+        urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'], //TODO: get by config module
         queue: 'daily_sales_report',
       },
     },

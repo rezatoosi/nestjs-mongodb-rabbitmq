@@ -12,14 +12,14 @@ import { MailerModule } from '@nestjs-modules/mailer';
     MailerModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         transport: {
-          host: configService.get<string>("SMTP_SERVER", "localhost"),
-          port: configService.get<number>("SMTP_PORT", 1025),
+          host: configService.get<string>('SMTP_SERVER', 'localhost'),
+          port: configService.get<number>('SMTP_PORT', 1025),
         },
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
