@@ -13,7 +13,7 @@ export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: () => void) {
     const start = Date.now();
     const userAgent = req.get('user-agent') || 'unknown';
-    const ip = req.ip || req.connection.remoteAddress || 'unknown';
+    const ip = req.ip || 'unknown';
     const contentLength = req.get('content-length') || 0;
 
     res.on('finish', () => {

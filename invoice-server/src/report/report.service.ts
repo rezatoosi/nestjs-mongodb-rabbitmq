@@ -7,12 +7,15 @@ import { Invoice } from 'src/invoice/schema/invoice.schema';
 import { ReportDto } from './dto/report.dto';
 import { catchError, firstValueFrom, throwError } from 'rxjs';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Injectable()
 export class ReportService {
   constructor(
     @InjectModel(Invoice.name) private readonly invoiceModel: Model<Invoice>,
     @Inject('INVOICE_SERVICE') private readonly rabbitClient: ClientProxy,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger
   ) { }
 
   @Cron('0 12 * * *')
@@ -22,8 +25,8 @@ export class ReportService {
     await firstValueFrom(
       this.rabbitClient.emit('report_generated', report).pipe(
         catchError((exception: Error) => {
+          this.logger.log('error', 'RabbitMQ server not available');
           return throwError(
-            //TODO: Log errors in .log file
             () => new HttpErrorByCode[500]('Something went wrong'),
           );
         }),
