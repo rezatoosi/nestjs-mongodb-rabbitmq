@@ -10,12 +10,12 @@ describe('AppService', () => {
   let service: AppService;
 
   const mockMailerService = {
-    sendMail: jest.fn().mockReturnValue({response: '250 Ok'}),
+    sendMail: jest.fn().mockReturnValue({ response: '250 Ok' }),
   };
 
   const mockConfigService = {
     get: jest.fn().mockReturnValue('some@string'),
-  }
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,7 +28,7 @@ describe('AppService', () => {
         {
           provide: ConfigService,
           useValue: mockConfigService,
-        }
+        },
       ],
     }).compile();
 

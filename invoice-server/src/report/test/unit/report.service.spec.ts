@@ -28,8 +28,8 @@ describe('ReportService', () => {
   };
 
   const mockLogger = {
-    log: jest.fn()
-  }
+    log: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -46,7 +46,7 @@ describe('ReportService', () => {
         {
           provide: WINSTON_MODULE_PROVIDER,
           useValue: mockLogger,
-        }
+        },
       ],
     }).compile();
 
