@@ -15,11 +15,11 @@ import { ConfigService } from '@nestjs/config';
       {
         name: 'INVOICE_SERVICE',
         useFactory: (configService: ConfigService) => ({
-          name: 'rabbit',
           transport: Transport.RMQ,
           options: {
             urls: [configService.get<string>('RABBITMQ_SERVER_URL', '')],
             queue: configService.get<string>('RABBITMQ_QUEUE_NAME'),
+            persistent: true,
           },
         }),
         inject: [ConfigService],
