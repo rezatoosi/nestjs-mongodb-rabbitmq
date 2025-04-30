@@ -16,8 +16,8 @@ export class ReportService {
   ) { }
 
   @Cron('0 12 * * *')
-  async sendReport() {
-    const report = await this.generateDailyReport();
+  async sendReport(date: Date) {
+    const report = await this.generateDailyReport(date);
 
     await firstValueFrom(
       this.rabbitClient.emit('report_generated', report).pipe(

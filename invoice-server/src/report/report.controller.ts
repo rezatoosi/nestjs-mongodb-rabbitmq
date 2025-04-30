@@ -13,8 +13,9 @@ export class ReportController {
   }
 
   @Get('/send')
-  async sendReport() {
-    await this.reportService.sendReport();
+  async sendReport(@Query('date') date?: string) {
+    const reportDate = date ? new Date(date) : new Date();
+    await this.reportService.sendReport(reportDate);
     return { message: 'Report sent successfully' };
   }
 }

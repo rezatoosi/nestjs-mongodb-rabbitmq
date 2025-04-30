@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { ClientProxy } from '@nestjs/microservices';
 import { of } from 'rxjs';
 import { ReportDto } from 'src/report/dto/report.dto';
+import { reportStub } from '../stubs/report.stubs';
 
 describe('ReportService', () => {
   let service: ReportService;
@@ -67,17 +68,12 @@ describe('ReportService', () => {
   });
 
   it('should send report', async () => {
-    const mockReport: ReportDto = {
-      generatedAt: new Date(),
-      date: new Date(),
-      totalSales: 1000,
-      itemsSold: [{ sku: 'item1', totalQuantitySold: 10 }],
-    };
+    const mockReport: ReportDto = reportStub();
     jest
       .spyOn(service, 'generateDailyReport')
       .mockResolvedValueOnce(mockReport);
 
-    await service.sendReport();
+    await service.sendReport(mockReport.date);
     expect(client.emit).toHaveBeenCalledWith('report_generated', mockReport);
   });
 });
