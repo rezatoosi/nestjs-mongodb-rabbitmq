@@ -14,7 +14,7 @@ export class InvoiceItem {
 
 export const InvoiceItemSchema = SchemaFactory.createForClass(InvoiceItem);
 
-@Schema() // TODO: check {timestamps: true}
+@Schema()
 export class Invoice {
   @Prop({ required: true })
   customer: string;

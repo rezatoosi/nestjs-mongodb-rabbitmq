@@ -29,4 +29,4 @@ import { ConfigService } from '@nestjs/config';
   controllers: [ReportController],
   providers: [ReportService],
 })
-export class ReportModule { }
+export class ReportModule {}

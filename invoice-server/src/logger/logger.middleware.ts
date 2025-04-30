@@ -8,7 +8,7 @@ import * as winston from 'winston';
 export class LoggerMiddleware implements NestMiddleware {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-  ) { }
+  ) {}
 
   use(req: Request, res: Response, next: () => void) {
     const start = Date.now();
@@ -46,6 +46,6 @@ export const Options: LoggerOptions = {
         winston.format.json(),
         // errorFilter(),
       ),
-    })
+    }),
   ],
 };

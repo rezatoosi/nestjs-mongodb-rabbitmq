@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ClientProxy, RmqStatus } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -15,8 +20,8 @@ export class ReportService {
   constructor(
     @InjectModel(Invoice.name) private readonly invoiceModel: Model<Invoice>,
     @Inject('INVOICE_SERVICE') private readonly rabbitClient: ClientProxy,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger
-  ) { }
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   @Cron('0 12 * * *')
   async sendReport(date: Date) {
@@ -30,7 +35,7 @@ export class ReportService {
             () => new HttpErrorByCode[500]('Something went wrong'),
           );
         }),
-      )
+      ),
     );
     return;
   }
@@ -90,7 +95,9 @@ export class ReportService {
 
     const reportData = await this.invoiceModel.aggregate(stage);
 
-    const totalSales = reportData[0].totalSales[0] ? reportData[0].totalSales[0].totalSales : 0;
+    const totalSales = reportData[0].totalSales[0]
+      ? reportData[0].totalSales[0].totalSales
+      : 0;
     const itemsSold = reportData[0]?.itemsSold;
 
     const report: ReportDto = {
