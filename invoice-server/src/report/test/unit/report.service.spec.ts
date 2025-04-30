@@ -7,6 +7,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { of } from 'rxjs';
 import { ReportDto } from 'src/report/dto/report.dto';
 import { reportStub } from '../stubs/report.stubs';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 describe('ReportService', () => {
   let service: ReportService;
@@ -26,6 +27,10 @@ describe('ReportService', () => {
     emit: jest.fn().mockReturnValue(of(null)),
   };
 
+  const mockLogger = {
+    log: jest.fn()
+  }
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -38,6 +43,10 @@ describe('ReportService', () => {
           provide: 'INVOICE_SERVICE',
           useValue: mockRabbitClient,
         },
+        {
+          provide: WINSTON_MODULE_PROVIDER,
+          useValue: mockLogger,
+        }
       ],
     }).compile();
 
