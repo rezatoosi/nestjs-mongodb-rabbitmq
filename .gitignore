@@ -3,6 +3,9 @@
 */node_modules
 */build
 
+mongodb_data
+rabbit_data
+
 # Logs
 logs
 *.log

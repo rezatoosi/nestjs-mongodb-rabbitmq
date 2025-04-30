@@ -1,0 +1,84 @@
+name: nestms
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:7.0-ubi9
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - "./mongodb_data:/data/db"
+    networks:
+      - net1
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    restart: always
+    volumes:
+      # - "./rabbit_data:/var/lib/rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - net1
+      - net2
+  
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - net2
+
+  invoice-service:
+    build:
+      context: ./invoice-server
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_CONNECTION_URI=mongodb://mongodb:27017/invoice-system
+      - MONGODB_CONNECTION_URI_TEST=mongodb://mongodb:27017/invoice-system-test
+      - RABBITMQ_SERVER_URL=amqp://rabbitmq:5672
+      - RABBITMQ_QUEUE_NAME=daily_sales_report
+    volumes:
+      - "./logs/invoice-server:/usr/src/app/logs"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - net1
+
+  email-sender:
+    build:
+      context: ./email-sender
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - RABBITMQ_SERVER_URL=amqp://rabbitmq:5672
+      - RABBITMQ_QUEUE_NAME=daily_sales_report
+      - SMTP_SERVER=mailhog
+      - SMTP_PORT=1025
+      - REPORT_EMAIL_FROM=report@reportserver.local
+      - REPORT_EMAIL_TO=manager@company.local
+    volumes:
+      - "./logs/email-sender:/usr/src/app/logs"
+    depends_on:
+      - rabbitmq
+      - mailhog
+    networks:
+      - net2
+
+volumes:
+  mongodb_data:
+    driver: local
+  rabbit_data:
+    driver: local
+
+networks:
+  net1:
+    driver: bridge
+  net2:
+    driver: bridge
