@@ -3,7 +3,6 @@
   <img src="https://www.mongodb.com/assets/images/global/favicon.ico" alt="MongoDB" height="40"/>
   <img src="https://www.rabbitmq.com/img/rabbitmq-logo.svg" alt="RabbitMQ" height="40"/>
   <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" height="40"/>
-  <img src="https://avatars.githubusercontent.com/u/313898?s=200&v=4" alt="MailHog" height="40"/>
 </p>
 
 # Invoice Microservices Project
