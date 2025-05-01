@@ -22,6 +22,16 @@ This is a minimal microservices-based project that demonstrates the integration 
 
 ---
 
+## 🧠 How It Works
+
+- Invoices are stored in MongoDB.
+- A **cron job** runs daily at **12:00 PM** to generate a report and send it via **RabbitMQ**.
+- The `email-sender` microservice listens to the RabbitMQ queue and sends the email.
+- If offline, it processes messages as soon as it comes online.
+- **MailHog** captures and displays all outgoing emails at `http://localhost:8025`.
+
+---
+
 ## 🚀 Getting Started
 
 Clone the repo and run the following command to start all services:
@@ -105,16 +115,6 @@ Example:
 **GET** `/report/send?date=YYYY-MM-DD`  
 Example:  
 `http://localhost:3000/report/send?date=2025-04-30`
-
----
-
-## 🧠 How It Works
-
-- Invoices are stored in MongoDB.
-- A **cron job** runs daily at **12:00 PM** to generate a report and send it via **RabbitMQ**.
-- The `email-sender` microservice listens to the RabbitMQ queue and sends the email.
-- If offline, it processes messages as soon as it comes online.
-- **MailHog** captures and displays all outgoing emails at `http://localhost:8025`.
 
 ---
 
