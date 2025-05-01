@@ -23,6 +23,8 @@ describe('ReportController', () => {
   });
 
   afterAll(async () => {
+    await dbConnection.dropDatabase();
+    await dbConnection.close();
     await app.close();
   });
 
