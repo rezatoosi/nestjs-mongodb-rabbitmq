@@ -5,15 +5,15 @@ services:
     restart: always
     ports:
       - "27017:27017"
-    volumes:
-      - "./mongodb_data:/data/db"
+    # volumes:
+    #   - "./mongodb_data:/data/db"
     networks:
       - net1
 
   rabbitmq:
     image: rabbitmq:4-management
     restart: always
-    volumes:
+    # volumes:
       # - "./rabbit_data:/var/lib/rabbitmq"
     ports:
       - "5672:5672"
