@@ -23,10 +23,10 @@ export const newInvoiceStub = (): Invoice => {
 
 export const newInvoiceListStub = (setDate: boolean = true) => {
   const { reference, ...sampleInvoice } = newInvoiceStub();
-  let invoiceList: Invoice[] = [];
+  const invoiceList: Invoice[] = [];
 
   for (let i = 10; i < 20; i++) {
-    let obj = { reference: i.toString(), ...sampleInvoice };
+    const obj = { reference: i.toString(), ...sampleInvoice };
     if (setDate) {
       obj.date = new Date(`2025-04-${i}`);
     }
@@ -38,10 +38,10 @@ export const newInvoiceListStub = (setDate: boolean = true) => {
 
 export const newInvoiceListForSameDateStub = (setDate: boolean = true) => {
   const { reference, ...sampleInvoice } = newInvoiceStub();
-  let invoiceList: Invoice[] = [];
+  const invoiceList: Invoice[] = [];
 
   for (let i = 10; i < 20; i++) {
-    let obj = { reference: i.toString(), ...sampleInvoice };
+    const obj = { reference: i.toString(), ...sampleInvoice };
     if (setDate) {
       obj.date = new Date(`2025-04-27`);
     }

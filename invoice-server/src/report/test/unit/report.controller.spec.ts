@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ReportController } from 'src/report/report.controller';
 import { ReportService } from 'src/report/report.service';
 import { reportStub } from '../stubs/report.stubs';
-import { ReportDto } from 'src/report/dto/report.dto';
 
 describe('ReportController', () => {
   let controller: ReportController;
@@ -29,7 +28,7 @@ describe('ReportController', () => {
   });
 
   describe('getReport', () => {
-    let reportData = reportStub();
+    const reportData = reportStub();
     const reportDate = reportData.date.toISOString();
     let recievedReport: unknown;
 
